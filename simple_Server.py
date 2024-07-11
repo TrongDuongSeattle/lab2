@@ -13,6 +13,6 @@ def start():
 		print(f"{addr}: {data.decode()}")
 		bye_Message = "bye from server"
 		conn.sendall(bye_Message.encode())
-
+	fd.close()
 
 start()
