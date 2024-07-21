@@ -8,11 +8,12 @@ def start():
 	print("waiting for incoming client...")
 	conn, addr = fd.accept()
 	print(f"connection from {addr}")
+
 	data = conn.recv(1024)
 	if data:
 		print(f"{addr}: {data.decode()}")
 		bye_Message = "bye from server"
 		conn.sendall(bye_Message.encode())
-	fd.close()
+
 
 start()
