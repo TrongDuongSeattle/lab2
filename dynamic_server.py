@@ -2,8 +2,18 @@ import socket
 import threading
 
 
+"""
+When messages are written, there is no guarantee that the whole message will make to server
+could define length of buffer sent and make sure to read that many bytes
+first byte could denote size of buffer and then read until that size. 
+
+would have to flush to make sure everything is also sent
+
+if the whole message isn't sent (or read?) could cause a hang because of blocking
+ considered making a list of threads to handle but that takes more learing tand this is late
+"""
+
 def get_message(conn, addr):
-    print("W I T N E S S  M E \n")
     # lock = threading.Lock()
     connected = True;
     while connected:
@@ -12,12 +22,11 @@ def get_message(conn, addr):
         if data:
             if data.decode().lower() == "exit":
                 connected = False
-                print(f"{addr} disconnected")
                 break
             print(f"{addr}: {data.decode()}")
-            bye_message = data.decode()
-            conn.sendall(bye_message.encode())
-    print("closing connection")
+            echo_message = data.decode()
+            conn.sendall(echo_message.encode())
+    # ends this thread
     conn.close()
 
 
@@ -34,7 +43,6 @@ def start():
             args=(conn, addr, )
         )
         thread.start()
-        print(f"[active connections] {threading.active_count() - 1}")
     thread.join()
     # need to close
     print("hang?")

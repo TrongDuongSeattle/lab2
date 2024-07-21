@@ -1,4 +1,5 @@
 import socket
+import threading
 
 '''
 - 3 clients send request to the serve
@@ -26,18 +27,16 @@ which is equivalent to:
         
 Synchronous means blocking
 '''
-
+lock = threading.Lock()
 
 def start():
     while True:
         fd = socket. socket(socket.AF_INET, socket.SOCK_STREAM)
         fd.bind(('localhost', 8080))
-        #  Enable a server to accept connections.
-        #  number is amount clients we can queue up before refusing
         fd.listen(3)
         print("waiting for the incoming client...")
-        #  while True:
         while True:
+            #this is blocking, so technically this is synchronous
             conn, addr = fd.accept()
             print(f"connection form {addr}")
             data = conn.recv(1024)

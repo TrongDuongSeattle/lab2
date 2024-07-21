@@ -24,7 +24,6 @@ finally:
 '''
 
 
-# accept client message
 
 
 def get_message(client_socket, client_address):
